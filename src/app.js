@@ -11,6 +11,7 @@ app.use(express.json());
 app.use("/api", indexRoutes);
 app.use("/api", usersRoutes);
 
+// not found
 app.use((req, res, next) => {
   console.error(`404 Not Found: ${req.method} ${req.originalUrl}`);
   res
