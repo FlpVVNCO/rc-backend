@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  confirmUser,
   loginUser,
   logoutUser,
   profile,
@@ -15,5 +16,6 @@ router.post("/login", validateSchema(loginSchema), loginUser);
 router.post("/logout", logoutUser);
 router.post("/register", validateSchema(registerSchema), registerUser);
 router.get("/profile", authRequired, profile);
+router.get("/confirm/:token", confirmUser);
 
 export default router;
