@@ -1,15 +1,24 @@
 import express from "express";
+import cookieParser from "cookie-parser";
+import morgan from "morgan";
 import usersRoutes from "./routes/users.routes.js";
 import indexRoutes from "./routes/index.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
+// para ver todas las solicitudes que se hacen al backend
+app.use(morgan("dev"));
+
 // para convertir los datos en json
 app.use(express.json());
+//para
+app.use(cookieParser());
 
 // usando las rutas creadas
 app.use("/api", indexRoutes);
 app.use("/api", usersRoutes);
+app.use("/api", authRoutes);
 
 // not found
 app.use((req, res, next) => {

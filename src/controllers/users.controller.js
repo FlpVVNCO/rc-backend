@@ -30,25 +30,6 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
-  const { name, email, password } = req.body;
-  try {
-    const [rows] = await pool.query(
-      "INSERT INTO users (name,email,password) VALUES (?, ? ,?)",
-      [name, email, password]
-    );
-    res.send({
-      id: rows.insertId,
-      name,
-      email,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Something goes wrong",
-    });
-  }
-};
-
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { name, email, password } = req.body;
