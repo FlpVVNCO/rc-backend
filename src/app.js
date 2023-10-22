@@ -4,6 +4,7 @@ import morgan from "morgan";
 import usersRoutes from "./routes/users.routes.js";
 import indexRoutes from "./routes/index.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import booksRoutes from "./routes/books.routes.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use("/api", indexRoutes);
 app.use("/api", usersRoutes);
 app.use("/api", authRoutes);
+app.use("/api", booksRoutes);
 
 // not found
 app.use((req, res, next) => {
