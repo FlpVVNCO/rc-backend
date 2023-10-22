@@ -73,6 +73,16 @@ export const confirmUser = async (req, res) => {
         [results[0].user_id]
       );
 
+      await pool.query(
+        "INSERT INTO book_list (name_list, user_id) VALUES (?,?)",
+        ["Leídos", [results[0].user_id]]
+      );
+
+      await pool.query(
+        "INSERT INTO book_list (name_list, user_id) VALUES (?,?)",
+        ["Por leer", [results[0].user_id]]
+      );
+
       res.send({ message: "Successful confirmation! You can now log in." });
     } else {
       res
