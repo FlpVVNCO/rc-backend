@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const dominios = [
-  "https://rc-frontend-phi.vercel.app/",
+  "https://rc-frontend-phi.vercel.app",
   "http://localhost:3000",
 ];
 
@@ -26,6 +26,9 @@ app.use(
   cors({
     origin: dominios,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
   })
 );
 
