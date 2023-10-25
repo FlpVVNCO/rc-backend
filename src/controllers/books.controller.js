@@ -1,18 +1,39 @@
 import { pool } from "../db.js";
 
+export const getBooksBySearch = async (req, res) => {
+  const searchTerm = `%${req.query.search}%`;
+  const query = `
+    SELECT * FROM books
+    WHERE title LIKE ? OR authors LIKE ? OR categories LIKE ?
+  `;
+  const queryParams = [searchTerm, searchTerm, searchTerm];
+
+  try {
+    const [results] = await pool.execute(query, queryParams);
+    if (results.length === 0) {
+      res.status(404).json({
+        message: "No books matching the search criteria were found.",
+      });
+    } else {
+      res.json(results);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error in book query" });
+  }
+};
+
 // obtiene los libros, con filtros incluidos
 export const getBooks = async (req, res) => {
-  // valores por defecto de la páginación
   const page = parseInt(req.query.page) || 1;
-  const perPage = parseInt(req.query.perPage) || 10;
-
+  const perPage = parseInt(req.query.perPage) || 20;
   const queryFilters = [];
   const queryParams = [];
 
   // no está el filtro de país porque el json no tenia ese campo
   const filterAuthorsCategories = {
-    authors: "authors LIKE ?",
-    categories: "categories LIKE ?",
+    authors: "LOWER(authors) LIKE LOWER(?)",
+    categories: "LOWER(categories) LIKE LOWER(?)",
   };
 
   const filterConditions = {
@@ -24,7 +45,7 @@ export const getBooks = async (req, res) => {
 
   // Comprobar si se proporciona 'title' como filtro
   if (req.query.title) {
-    queryFilters.push("title LIKE ?");
+    queryFilters.push("LOWER(title) LIKE LOWER(?)");
     queryParams.push(`%${req.query.title}%`);
   }
 
@@ -72,7 +93,7 @@ export const getBooks = async (req, res) => {
   try {
     const [results] = await pool.execute(query, queryParams);
     if (results.length === 0) {
-      res.json({
+      res.status(404).json({
         message: "No books matching the search criteria were found.",
       });
     } else {
@@ -80,7 +101,27 @@ export const getBooks = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error in book query" });
+    res.status(500).json({ message: "Error in book query" });
+  }
+};
+
+export const getBook = async (req, res) => {
+  const { name } = req.query;
+
+  try {
+    const [results] = await pool.query("SELECT * FROM books WHERE title = ?", [
+      name,
+    ]);
+    if (results.length === 0) {
+      res.status(404).json({
+        message: "No books matching the search criteria were found.",
+      });
+    } else {
+      res.json(results);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error in book query" });
   }
 };
 
@@ -125,7 +166,6 @@ export const insertBook = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 const query = `SELECT
 book_list.name_list as name_list,

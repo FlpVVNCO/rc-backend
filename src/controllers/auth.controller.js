@@ -28,7 +28,7 @@ export const registerUser = async (req, res) => {
       from: EMAIL,
       to: email,
       subject: "Confirma tu cuenta",
-      text: `Hola ${name} ¡Gracias por registrarte! Haz clic en el siguiente enlace para confirmar tu cuenta: http://localhost:3000/api/confirm/${token}`,
+      text: `Hola ${name} ¡Gracias por registrarte! Haz clic en el siguiente enlace para confirmar tu cuenta: http://localhost:4000/api/confirm/${token}`,
     };
 
     await transporter.sendMail(mailOptions, (error, info) => {
@@ -121,6 +121,8 @@ export const loginUser = async (req, res) => {
       user_avatar: userFound[0].user_avatar,
       created_at: userFound[0].created_at,
       update_at: userFound[0].update_at,
+      confirmation_token: userFound[0].confirmation_token,
+      confirmed: userFound[0].confirmed,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -1,16 +1,18 @@
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
+import { decode } from "next-auth/jwt";
 import { TOKEN_SECRET } from "../config.js";
-export const authRequired = (req, res, next) => {
-  const { token } = req.cookies;
+export const authRequired = async (req, res, next) => {
+  const token = req.cookies["next-auth.session-token"];
 
-  if (!token)
+  const decoded = await decode({
+    token: token,
+    secret: TOKEN_SECRET,
+  });
+
+  if (!decoded)
     return res.status(401).json({ message: "No token, authorization denied" });
 
-  jwt.verify(token, TOKEN_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: "Invalid token" });
+  req.user = decoded;
 
-    req.user = user;
-
-    next();
-  });
+  next();
 };
