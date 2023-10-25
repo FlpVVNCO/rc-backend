@@ -17,12 +17,7 @@ app.use(express.json());
 //para
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
+app.use(cors());
 
 // usando las rutas creadas
 app.use("/api", indexRoutes);
