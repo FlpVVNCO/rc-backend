@@ -17,13 +17,16 @@ app.use(express.json());
 //para
 app.use(cookieParser());
 
+const dominios = [
+  "https://rc-frontend-phi.vercel.app/",
+  "http://localhost:3000",
+];
 
-app.use(cors({
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-}));
+app.use(
+  cors({
+    origin: dominios,
+  })
+);
 
 // usando las rutas creadas
 app.use("/api", indexRoutes);
