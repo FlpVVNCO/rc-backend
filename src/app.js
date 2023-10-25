@@ -25,6 +25,7 @@ const dominios = [
 app.use(
   cors({
     origin: dominios,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
 
