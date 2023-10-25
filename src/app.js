@@ -17,7 +17,13 @@ app.use(express.json());
 //para
 app.use(cookieParser());
 
-app.use(cors());
+
+app.use(cors({
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+}));
 
 // usando las rutas creadas
 app.use("/api", indexRoutes);
