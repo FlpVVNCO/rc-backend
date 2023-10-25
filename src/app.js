@@ -29,6 +29,7 @@ app.use(
     preflightContinue: false,
     optionsSuccessStatus: 204,
     credentials: true,
+    allowedHeaders: ["Cookie", "Content-Type"],
   })
 );
 
