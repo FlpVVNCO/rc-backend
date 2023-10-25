@@ -4,6 +4,8 @@ import { TOKEN_SECRET } from "../config.js";
 export const authRequired = async (req, res, next) => {
   const token = req.cookies["next-auth.session-token"];
 
+  console.log({ token });
+
   const decoded = await decode({
     token: token,
     secret: TOKEN_SECRET,
