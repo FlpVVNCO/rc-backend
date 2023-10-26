@@ -127,8 +127,7 @@ export const getBook = async (req, res) => {
 
 // crea una lista de libros *funcionalidad extra*
 export const createBookList = async (req, res) => {
-  const { nameList } = req.body;
-  const userId = [req.user.id];
+  const { nameList, userId } = req.body;
   try {
     const [results] = await pool.query(
       "INSERT INTO book_list (name_list, user_id) VALUES (?,?)",
@@ -142,11 +141,11 @@ export const createBookList = async (req, res) => {
 
 // obtiene las listas por usuario
 export const getBookList = async (req, res) => {
-  const userId = [req.user.id];
+  const userId = req.query.userId;
   try {
     const [results] = await pool.query(
       "SELECT * FROM book_list WHERE user_id = ?",
-      userId
+      [userId]
     );
     res.json(results);
   } catch (error) {

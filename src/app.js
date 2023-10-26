@@ -14,13 +14,10 @@ app.use(morgan("dev"));
 
 // para convertir los datos en json
 app.use(express.json());
-//para
+//para poder leer cookies
 app.use(cookieParser());
 
-const dominios = [
-  "https://rc-frontend-phi.vercel.app",
-  "http://localhost:3000",
-];
+const dominios = ["https://readconnect.vercel.app", "http://localhost:3000"];
 
 app.use(
   cors({
