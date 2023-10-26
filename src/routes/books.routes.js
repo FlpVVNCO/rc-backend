@@ -12,10 +12,10 @@ import { authRequired } from "../middlewares/validateToken.js";
 const router = Router();
 
 // ruta de libros
-router.get("/books", authRequired, getBooks);
-router.get("/searchBook", authRequired, getBooksBySearch);
-router.post("/bookList", authRequired, createBookList);
-router.get("/bookList", authRequired, getBookList);
-router.post("/book", authRequired, insertBook);
+router.get("/books", getBooks);
+router.get("/searchBook", getBooksBySearch);
+router.post("/bookList", createBookList);
+router.get("/bookList", getBookList);
+router.post("/book", insertBook);
 
 export default router;
