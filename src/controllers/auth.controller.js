@@ -7,6 +7,17 @@ import { EMAIL } from "../config.js";
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
+    // Verifica si el correo electrónico ya existe en la base de datos
+    const [userFound] = await pool.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
+
+    if (userFound.length > 0) {
+      // Si el correo electrónico ya existe, devuelve un error
+      return res.status(400).json({ message: "Email is already in use" });
+    }
+
     const passHash = await bcrypt.hash(password, 10);
 
     // Registra al usuario en la base de datos
@@ -15,56 +26,61 @@ export const registerUser = async (req, res) => {
       [name, email, passHash]
     );
 
-    // Genera un token de verificación
-    const token = await createAccessToken({ id: rows.insertId });
+    // Genera un token de verificación con nombre, correo electrónico y fecha de creación
+    const sessionToken = await createAccessToken({
+      id: rows.insertId,
+      name: name,
+      email: email, // Puedes personalizar la fecha de creación como sea necesario
+      confirmed: 0, // Puedes personalizar la imagen del usuario según tus necesidades
+    });
 
     await pool.query(
       "UPDATE users SET confirmation_token = ? WHERE user_id = ?",
-      [token, rows.insertId]
+      [sessionToken, rows.insertId]
     );
 
     // Envia el correo de confirmación
     const mailOptions = {
       from: EMAIL,
       to: email,
-      subject: "Confirma tu cuenta",
-      text: `Hola ${name} ¡Gracias por registrarte! Haz clic en el siguiente enlace para confirmar tu cuenta: http://localhost:4000/api/confirm/${token}`,
+      subject: "Confirm Your Account",
+      text: `Hello ${name}! Thank you for registering. Please click the following link to confirm your account: http://localhost:4000/api/confirm/${sessionToken}`,
     };
 
     await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.error("Error al enviar el correo de confirmación:", error);
+        console.error("Error sending confirmation email:", error);
         return res
           .status(500)
-          .json({ message: "Error al enviar el correo de confirmación" });
+          .json({ message: "Error sending confirmation email" });
       }
 
-      // Establece una cookie de autenticación
-      res.cookie("token", token);
+      // Set an authentication cookie
+      res.cookie("sessionToken", sessionToken);
 
-      // Responde con la información del usuario
+      // Respond with user information
       res.json({
         id: rows.insertId,
         name,
         email,
         message:
-          "Registro exitoso. Por favor, verifica tu correo electrónico para confirmar tu cuenta.",
+          "Registration successful. Please check your email to confirm your account.",
       });
     });
   } catch (error) {
-    console.error("Error al registrar al usuario:", error);
+    console.error("Error registering the user:", error);
     res.status(500).json({
-      message: "Error al registrar al usuario",
+      message: "Error registering the user",
     });
   }
 };
 
 export const confirmUser = async (req, res) => {
-  const token = req.params.token;
+  const sessionToken = req.params.token;
   try {
     const [results] = await pool.query(
       "SELECT * FROM users WHERE confirmation_token = ?",
-      [token]
+      [sessionToken]
     );
 
     if (results.length === 1) {
@@ -112,7 +128,16 @@ export const loginUser = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Credentials do not match" });
 
-    const token = await createAccessToken({ id: userFound[0].user_id });
+    const token = await createAccessToken({
+      id: userFound[0].user_id,
+      name: userFound[0].name,
+      email: userFound[0].email,
+      user_avatar: userFound[0].user_avatar,
+      created_at: userFound[0].created_at,
+      update_at: userFound[0].update_at,
+      confirmation_token: userFound[0].confirmation_token,
+      confirmed: userFound[0].confirmed,
+    });
     res.cookie("token", token);
     res.json({
       id: userFound[0].user_id,
