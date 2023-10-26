@@ -30,13 +30,14 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
+export const updateProfile = async (req, res) => {
   const { id } = req.params;
-  const { name, email, password } = req.body;
+  const { name } = req.body;
+
   try {
     const [result] = await pool.query(
-      "UPDATE users SET name = IFNULL(?, name), email = IFNULL(?, email), password = IFNULL(?, password) WHERE user_id = ?",
-      [name, email, password, id]
+      "UPDATE users SET name = IFNULL(?, name) WHERE user_id = ?",
+      [name, id]
     );
 
     if (result.affectedRows === 0)
@@ -49,11 +50,10 @@ export const updateUser = async (req, res) => {
     res.json(rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: "Something goes wrong",
+      message: "Something went wrong",
     });
   }
 };
-
 export const deleteUser = async (req, res) => {
   try {
     const [result] = await pool.query("DELETE FROM users WHERE user_id = ?", [

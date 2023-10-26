@@ -166,6 +166,57 @@ export const insertBook = async (req, res) => {
   }
 };
 
+export const voteBook = async (req, res) => {
+  const { bookId, rate } = req.body;
+
+  try {
+    // Insertar el voto en la tabla "book_votes"
+    pool.query(
+      "INSERT INTO book_votes (book_id, rate) VALUES (?, ?)",
+      [bookId, rate],
+      (err, result) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ error: "Error adding the vote" });
+          return;
+        }
+
+        // Actualizar el campo "total_votes" en la tabla "books"
+        pool.query(
+          "UPDATE books SET total_votes = (SELECT COUNT(*) FROM book_votes WHERE book_id = ?) WHERE book_id = ?",
+          [bookId, bookId],
+          (err, result) => {
+            if (err) {
+              console.error(err);
+              res.status(500).json({ error: "Error updating total votes" });
+              return;
+            }
+
+            // Calcular el promedio de votos y actualizar el campo "rating" en la tabla "books"
+            pool.query(
+              "UPDATE books SET rating = (SELECT AVG(rate) FROM book_votes WHERE book_id = ?) WHERE book_id = ?",
+              [bookId, bookId],
+              (err, result) => {
+                if (err) {
+                  console.error(err);
+                  res
+                    .status(500)
+                    .json({ error: "Error calculating the average votes" });
+                  return;
+                }
+
+                res.json({ message: "Vote added and average updated" });
+              }
+            );
+          }
+        );
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ message: "Error voting" });
+  }
+};
+
 const query = `SELECT
 book_list.name_list as name_list,
 books.title as title_book,

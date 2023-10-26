@@ -44,7 +44,7 @@ export const registerUser = async (req, res) => {
       from: EMAIL,
       to: email,
       subject: "Confirm Your Account",
-      text: `Hello ${name}! Thank you for registering. Please click the following link to confirm your account: http://localhost:4000/api/confirm/${sessionToken}`,
+      text: `Hello ${name}! Thank you for registering. Please click the following link to confirm your account: https://rc-backend-production.up.railway.app/api/confirm/${sessionToken}`,
     };
 
     await transporter.sendMail(mailOptions, (error, info) => {
