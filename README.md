@@ -2,7 +2,7 @@
 
 Backend creado con express y mysql para challenge de lab microsystem.
 
-[Visitar la aplicación desplegada]([https://rc-backend-production.up.railway.app/])
+[Visitar la aplicación desplegada](https://rc-backend-production.up.railway.app/)
 
 ## Comenzando 🚀
 
