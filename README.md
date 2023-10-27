@@ -63,7 +63,7 @@ _El proyecto se ejecutará en `http://localhost:el-puerto-que-elijas`. Puedes ac
 
 ## Diagrama de la bd mysql 
 
-https://github.com/FlpVVNCO/rc-backend/issues/1#issue-1964563814
+![diagrama bd](https://github.com/FlpVVNCO/rc-backend/assets/96359993/7b952c22-1c40-405e-8051-95cfa0bf3abd)
 
 ## Dependencias y Tecnologías
 
