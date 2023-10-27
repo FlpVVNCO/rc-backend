@@ -1,6 +1,6 @@
-# READCONNECT BACKEND
+# Frontend para Challenge de Lab Microsystem
 
-Backend creado con express y mysql para challenge de lab microsystem.
+Backend creado con Express.ks y MySql para challenge de lab microsystem.
 
 [Visitar la aplicación desplegada](https://rc-backend-production.up.railway.app/)
 
@@ -14,41 +14,51 @@ Antes de comenzar, asegúrate de tener instalado [Node.js](https://nodejs.org/) 
 
 ### Instalación 🔧
 
-_1. Clona el repositorio en tu máquina local utilizando el siguiente comando:_
+1. Clona el repositorio en tu máquina local utilizando el siguiente comando:
 
    ```
    git clone URL_DEL_REPOSITORIO
    ```
 
-_Navega al directorio del proyecto:_
+2. Navega al directorio del proyecto:
 
    ```
    cd NOMBRE_DEL_DIRECTORIO
    ```
+
+3. Ve al directorio del proyecto:
+
+   ```
+   cd repo-del-frontend
+   ```
    
-_Instala las dependencias del proyecto ejecutando el siguiente comando_
+4. Instala las dependencias del proyecto ejecutando el siguiente comando
 
+   ```
+   npm install
+   ```
+5. Crea un archivo `.env.local` en el directorio raíz del proyecto y configura tus variables de entorno:
 
+ ```
+   DB_USER='usuario de la db'
+   DB_HOST='host yo ocupé amazon rds'
+   DB_DATABASE='nombre de la db'
+   DB_PASSWORD='pass de tu db'
+   DB_PORT=3306
+   PORT=4000
+   EMAIL="email que envía los correos"
+   PASS_EMAIL="password del email que envía los correos"
+   NEXTAUTH_SECRET='clave secreta con la que creaste el token para leerlo desde nextauth'
 ```
-npm i
-```
 
-### Configuración
+Asegúrate de configurar las variables de entorno adecuadamente según tus necesidades.
 
-_Para configurar el proyecto, debes crear un archivo .env en el directorio raíz del proyecto con las siguientes variables de entorno:_
+6. Inicia el servidor de desarrollo:
 
-```
-DB_USER='usuario de la db'
-DB_HOST='host yo ocupé amazon rds'
-DB_DATABASE='nombre de la db'
-DB_PASSWORD='pass de tu db'
-DB_PORT=3306
-PORT=4000
-EMAIL="email que envía los correos"
-PASS_EMAIL="password del email que envía los correos"
-NEXTAUTH_SECRET='clave secreta con la que creaste el token para leerlo desde nextauth'
-```
-_Asegúrate de reemplazar los valores con la información adecuada_
+   ```
+      npm run dev
+   ```
+_El proyecto se ejecutará en `http://localhost:el-puerto-que-elijas`. Puedes acceder a él desde tu navegador._
 
 ## Dependencias y Tecnologías
 
