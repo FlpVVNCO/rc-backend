@@ -1,7 +1,10 @@
 # READCONNECT BACKEND
 
-Backend creado con express y mysql.
-link de deploy: https://rc-backend-production.up.railway.app/
+Backend creado con express y mysql para challenge de lab microsystem.
+_link de deploy:_
+
+
+```https://rc-backend-production.up.railway.app/```
 
 ## Comenzando 🚀
 
