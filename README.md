@@ -1,4 +1,4 @@
-# Frontend para Challenge de Lab Microsystem
+# Backend para Challenge de Lab Microsystem
 
 Backend creado con Express.ks y MySql para challenge de lab microsystem.
 
@@ -59,6 +59,11 @@ Asegúrate de configurar las variables de entorno adecuadamente según tus neces
       npm run dev
    ```
 _El proyecto se ejecutará en `http://localhost:el-puerto-que-elijas`. Puedes acceder a él desde tu navegador._
+
+
+## Diagrama de la bd mysql 
+
+https://github.com/FlpVVNCO/rc-backend/issues/1#issue-1964563814
 
 ## Dependencias y Tecnologías
 
