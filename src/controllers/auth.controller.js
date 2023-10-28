@@ -100,6 +100,7 @@ export const confirmUser = async (req, res) => {
       );
 
       res.send({ message: "Successful confirmation! You can now log in." });
+      res.redirect("https://readconnect.vercel.app/login");
     } else {
       res
         .status(400)
